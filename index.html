@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canonflip — The canon just flipped.</title>
+<meta name="description" content="Canonflip builds local-first, privacy-native, agent-powered software for the people who see the future.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟲</text></svg>">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111;
+    --text: #f0f0f0;
+    --dim: #666;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #3fb950;
+    --orange: #d2993a;
+    --red: #f85149;
+    --border: #1a1a1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; overflow-x: hidden; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(124,58,237,0.04) 0%, transparent 50%);
+    animation: drift 20s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-3%, 2%); }
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+  .logo-mark {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: flip 3s ease-in-out infinite;
+  }
+  @keyframes flip {
+    0%, 80%, 100% { transform: rotateY(0deg); }
+    90% { transform: rotateY(180deg); }
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero .subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: #999;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+  .hero .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--dim);
+    font-size: 0.85rem;
+    animation: bounce 2s ease infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* Sections */
+  section { padding: 6rem 2rem; max-width: 900px; margin: 0 auto; }
+  section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  section p { color: #aaa; font-size: 1.1rem; margin-bottom: 1.2rem; }
+  section p strong { color: var(--text); }
+
+  /* Manifesto */
+  .manifesto {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .manifesto blockquote {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #ccc;
+    border-left: 3px solid var(--accent);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  /* The Flip Table */
+  .flip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    font-size: 1rem;
+  }
+  .flip-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--border);
+    color: var(--dim);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .flip-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .flip-table .old { color: var(--dim); text-decoration: line-through; }
+  .flip-table .new { color: var(--accent); font-weight: 600; }
+  .flip-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Products */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .product-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .product-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .product-card .emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+  .product-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .product-card p { color: var(--dim); font-size: 0.95rem; margin: 0; }
+  .product-card .status {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .status-live { background: rgba(63,185,80,0.15); color: var(--green); }
+  .status-soon { background: rgba(210,153,34,0.15); color: var(--orange); }
+
+  /* Values */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .value {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg2);
+  }
+  .value h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+  .value p { color: var(--dim); font-size: 0.9rem; margin: 0; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--dim);
+    font-size: 0.85rem;
+  }
+  footer .brand { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    section { padding: 4rem 1.5rem; }
+    .flip-table { font-size: 0.85rem; }
+    .flip-table th, .flip-table td { padding: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="logo-mark">⟲</div>
+    <h1>The canon just <span>flipped.</span></h1>
+    <p class="subtitle">
+      Everyone told you AI lives in the cloud. That your data belongs to someone else's servers. That you need their permission to build.
+      <br><br>
+      They were wrong.
+    </p>
+  </div>
+  <div class="scroll-hint">↓</div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <h2>Two groups of people.</h2>
+  <p>The world is splitting. On one side, people using AI the way they were told — typing into chatbots, trusting the cloud, waiting for the next feature drop from a company that doesn't know their name.</p>
+  <p>On the other side, a growing group who went down the rabbit hole. Who run their own models. Who built agents that work while they sleep. Who realized <strong>the old rules don't apply anymore.</strong></p>
+  <blockquote>The canon — the accepted truth about how software works — just flipped. And there's no going back.</blockquote>
+  <p><strong>Canonflip builds tools for the other side.</strong></p>
+</section>
+
+<!-- THE FLIP -->
+<section>
+  <h2>The Flip</h2>
+  <table class="flip-table">
+    <thead>
+      <tr><th>Old Canon</th><th>Flipped</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="old">AI is a chatbot</td><td class="new">AI is infrastructure</td></tr>
+      <tr><td class="old">Your data goes to the cloud</td><td class="new">Your data stays on your machine</td></tr>
+      <tr><td class="old">You use someone else's platform</td><td class="new">You run your own agents</td></tr>
+      <tr><td class="old">Privacy costs convenience</td><td class="new">Privacy IS the product</td></tr>
+      <tr><td class="old">Big companies lead</td><td class="new">Builders lead</td></tr>
+      <tr><td class="old">Wait for permission</td><td class="new">Ship it yourself</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PRODUCTS -->
+<section>
+  <h2>What We're Building</h2>
+  <p>Every Canonflip product shares the same DNA: <strong>local-first, privacy-native, agent-powered.</strong></p>
+  <div class="products">
+    <div class="product-card">
+      <div class="emoji">🦀</div>
+      <h3>CloakClaw</h3>
+      <p>Local AI privacy proxy. Automatically redacts sensitive data before it reaches cloud LLMs. 24 entity types. Full round-trip restore. Your secrets never leave your machine.</p>
+      <span class="status status-live">Live</span>
+    </div>
+    <div class="product-card">
+      <div class="emoji">🌊</div>
+      <h3>WaveClaw</h3>
+      <p>AI-native hosting. Run your own models, agents, and services on infrastructure that respects your data and your wallet.</p>
+      <span class="status status-soon">Coming Soon</span>
+    </div>
+    <div class="product-card">
+      <div class="emoji">🔮</div>
+      <h3>What's Next</h3>
+      <p>We're building the toolkit for the AI-native world. If you've gone down the rabbit hole, you'll know when you see it.</p>
+      <span class="status status-soon">Building</span>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section>
+  <h2>How We Build</h2>
+  <div class="values-grid">
+    <div class="value">
+      <h3>🏠 Local-First</h3>
+      <p>Your data processes on your hardware. Cloud is optional, never required.</p>
+    </div>
+    <div class="value">
+      <h3>🔒 Privacy-Native</h3>
+      <p>Privacy isn't a feature we bolt on. It's the architecture.</p>
+    </div>
+    <div class="value">
+      <h3>🤖 Agent-Powered</h3>
+      <p>Built for the world where AI agents do the heavy lifting.</p>
+    </div>
+    <div class="value">
+      <h3>🚫 Zero Telemetry</h3>
+      <p>Nothing phones home. No analytics. No tracking. Ever.</p>
+    </div>
+    <div class="value">
+      <h3>🔧 Builder-First</h3>
+      <p>CLI, APIs, and config files. Built by builders, for builders.</p>
+    </div>
+    <div class="value">
+      <h3>📖 Open Source</h3>
+      <p>Inspect every line. Trust comes from transparency.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="brand">⟲ Canonflip</div>
+  <p>Flip the canon. Build the future.</p>
+  <p style="margin-top: 1rem;">
+    <a href="https://cloakclaw.com">CloakClaw</a> ·
+    <a href="https://github.com/canonflip">GitHub</a>
+  </p>
+  <p style="margin-top: 1.5rem; font-size: 0.75rem;">© 2026 Canonflip. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
