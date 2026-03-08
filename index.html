@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+if (location.hostname === 'cloakclaw.com' || location.hostname === 'www.cloakclaw.com') {
+  fetch('/cloakclaw/index.html').then(r => r.text()).then(html => {
+    document.open();
+    document.write(html);
+    document.close();
+  });
+}
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canonflip — The canon just flipped.</title>
