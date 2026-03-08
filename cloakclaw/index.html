@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CloakClaw — Local AI Privacy Proxy</title>
+<meta name="description" content="Automatically redact sensitive data before sending to cloud LLMs. 24 entity types. Full round-trip restore. Your secrets never leave your machine.">
+<meta property="og:title" content="CloakClaw — Local AI Privacy Proxy">
+<meta property="og:description" content="Redact sensitive data before sending to cloud LLMs. 24 entity types. Zero telemetry. 100% local.">
+<meta property="og:image" content="https://cloakclaw.com/cloakclaw-logo-white.jpg">
+<meta property="og:url" content="https://cloakclaw.com">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@cloakclaw">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦀</text></svg>">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #0a0a0f; --bg2: #12121a; --bg3: #1a1a26; --text: #e8e8ef; --dim: #8888a0; --accent: #00d4ff; --purple: #9b4dca; --red: #e84d2e; --green: #4ade80; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .hero { text-align: center; padding: 80px 20px 60px; max-width: 800px; margin: 0 auto; }
+  .hero img { width: 120px; height: 120px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-size: 3rem; margin-bottom: 8px; }
+  .hero h1 span { color: var(--accent); }
+  .hero .tagline { font-size: 1.3rem; color: var(--dim); margin-bottom: 32px; }
+  .hero .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .hero .badges img { height: 22px; }
+
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .cta a { padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; transition: all 0.2s; }
+  .cta .primary { background: var(--accent); color: #000; }
+  .cta .primary:hover { background: #33dfff; text-decoration: none; }
+  .cta .secondary { background: var(--bg3); border: 1px solid #333; color: var(--text); }
+  .cta .secondary:hover { border-color: var(--accent); text-decoration: none; }
+
+  .install-cmd { background: var(--bg2); border: 1px solid #333; border-radius: 8px; padding: 16px 24px; font-family: 'SF Mono', monospace; font-size: 15px; display: inline-block; margin: 24px 0; color: var(--green); }
+  .install-cmd span { color: var(--dim); }
+
+  .demo { max-width: 700px; margin: 0 auto 60px; padding: 0 20px; }
+  .demo pre { background: var(--bg2); border: 1px solid #333; border-radius: 12px; padding: 24px; font-size: 13px; line-height: 1.7; overflow-x: auto; font-family: 'SF Mono', monospace; }
+  .demo .arrow { color: var(--accent); }
+  .demo .redacted { color: var(--red); }
+  .demo .safe { color: var(--green); }
+  .demo .label { color: var(--purple); font-weight: 600; }
+
+  .features { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+  .features h2 { text-align: center; font-size: 2rem; margin-bottom: 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+  .card { background: var(--bg2); border: 1px solid #222; border-radius: 12px; padding: 24px; }
+  .card .icon { font-size: 1.5rem; margin-bottom: 8px; }
+  .card h3 { font-size: 1rem; margin-bottom: 8px; }
+  .card p { font-size: 13px; color: var(--dim); }
+
+  .entities { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+  .entities h2 { text-align: center; font-size: 2rem; margin-bottom: 12px; }
+  .entities .sub { text-align: center; color: var(--dim); margin-bottom: 32px; }
+  .chip-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .chip { background: var(--bg3); border: 1px solid #333; padding: 6px 14px; border-radius: 20px; font-size: 12px; color: var(--text); }
+
+  .how { max-width: 700px; margin: 0 auto; padding: 0 20px 60px; }
+  .how h2 { text-align: center; font-size: 2rem; margin-bottom: 32px; }
+  .step { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+  .step .num { background: var(--accent); color: #000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .step .text h3 { font-size: 15px; margin-bottom: 4px; }
+  .step .text p { font-size: 13px; color: var(--dim); }
+
+  footer { text-align: center; padding: 40px 20px; border-top: 1px solid #222; color: var(--dim); font-size: 13px; }
+  footer a { color: var(--dim); }
+  footer a:hover { color: var(--accent); }
+  footer .links { display: flex; gap: 20px; justify-content: center; margin-bottom: 12px; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .hero .tagline { font-size: 1rem; }
+    .demo pre { font-size: 11px; padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img src="cloakclaw-logo-white.jpg" alt="CloakClaw">
+  <h1>🦀 Cloak<span>Claw</span></h1>
+  <p class="tagline">Local AI privacy proxy — redact sensitive data before sending to cloud LLMs</p>
+  
+  <div class="badges">
+    <a href="https://www.npmjs.com/package/cloakclaw"><img src="https://img.shields.io/npm/v/cloakclaw?color=00d4ff&label=npm" alt="npm"></a>
+    <a href="https://github.com/canonflip/cloakclaw"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT"></a>
+    <a href="https://www.npmjs.com/package/cloakclaw"><img src="https://img.shields.io/npm/dm/cloakclaw?color=orange" alt="downloads"></a>
+  </div>
+
+  <div class="cta">
+    <a href="https://github.com/canonflip/cloakclaw" class="primary">View on GitHub</a>
+    <a href="https://www.npmjs.com/package/cloakclaw" class="secondary">npm package</a>
+  </div>
+
+  <div class="install-cmd"><span>$</span> npm install -g cloakclaw</div>
+</div>
+
+<div class="demo">
+  <pre><span class="label">📄 Your Document</span>                    <span class="arrow">→</span>  <span class="label">🔒 Cloaked</span>                        <span class="arrow">→</span>  <span class="label">☁️ Cloud LLM</span>
+
+<span class="redacted">"Sarah Chen, CEO of                "James Park, CEO of             Sees only</span>
+<span class="redacted"> Acme Corp, owes $4.2M              Northstar Solutions,            fake data</span>
+<span class="redacted"> on invoice #INV-2024-0847"         owes $3.8M on #INV-2024-0293"</span>
+
+<span class="label">☁️ LLM Response</span>                       <span class="arrow">→</span>  <span class="label">🔓 Restored</span>
+
+<span class="safe">"James Park should restructure     "Sarah Chen should restructure</span>
+<span class="safe"> the $3.8M obligation..."           the $4.2M obligation..."</span></pre>
+</div>
+
+<div class="features">
+  <h2>Why CloakClaw?</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="icon">🧠</div>
+      <h3>Two-Pass Detection</h3>
+      <p>Regex patterns catch structured data. Local Ollama LLM catches names, companies, and context-dependent entities that regex misses.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏠</div>
+      <h3>100% Local</h3>
+      <p>Cloaking runs entirely on your machine. No cloud calls. No API keys needed for the privacy layer itself.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔐</div>
+      <h3>AES-256 Encrypted</h3>
+      <p>Entity mappings stored in encrypted SQLite. Optional password protection. Auto-expiry after 7 days.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔄</div>
+      <h3>Full Round-Trip</h3>
+      <p>Cloak before sending, decloak when the response comes back. Originals are perfectly restored.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📄</div>
+      <h3>6 Document Profiles</h3>
+      <p>General, Legal, Financial, Email, Code, Medical — each profile targets the entity types that matter most.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🚫</div>
+      <h3>Zero Telemetry</h3>
+      <p>Nothing phones home. No analytics. No tracking. No data collection. Ever.</p>
+    </div>
+  </div>
+</div>
+
+<div class="entities">
+  <h2>24 Entity Types</h2>
+  <p class="sub">From SSNs to API keys — CloakClaw catches what matters</p>
+  <div class="chip-grid">
+    <span class="chip">👤 People</span>
+    <span class="chip">🏢 Companies</span>
+    <span class="chip">📧 Emails</span>
+    <span class="chip">📞 Phones</span>
+    <span class="chip">📍 Addresses</span>
+    <span class="chip">💰 Dollars</span>
+    <span class="chip">🔢 SSNs</span>
+    <span class="chip">🏦 Accounts</span>
+    <span class="chip">🏛️ Banks</span>
+    <span class="chip">📅 Dates</span>
+    <span class="chip">🌐 IPs</span>
+    <span class="chip">🔑 API Keys</span>
+    <span class="chip">🔒 Passwords</span>
+    <span class="chip">📡 MACs</span>
+    <span class="chip">🔗 URLs</span>
+    <span class="chip">📊 Percentages</span>
+    <span class="chip">⚖️ Case Numbers</span>
+    <span class="chip">🏛️ Jurisdictions</span>
+    <span class="chip">🛂 Passports</span>
+    <span class="chip">🪪 Drivers License</span>
+    <span class="chip">₿ Crypto Wallets</span>
+    <span class="chip">📍 GPS Coords</span>
+    <span class="chip">🚗 VINs</span>
+    <span class="chip">🏥 Medical IDs</span>
+  </div>
+</div>
+
+<div class="how">
+  <h2>How It Works</h2>
+  <div class="step"><div class="num">1</div><div class="text"><h3>Extract</h3><p>PDF, DOCX, TXT, CSV, JSON — text extraction via poppler with pdfjs-dist fallback.</p></div></div>
+  <div class="step"><div class="num">2</div><div class="text"><h3>Detect</h3><p>Two-pass NER: fast regex patterns, then local Ollama LLM for contextual analysis.</p></div></div>
+  <div class="step"><div class="num">3</div><div class="text"><h3>Replace</h3><p>Generate realistic fakes — dollars scale proportionally, dates shift consistently, names get plausible alternatives.</p></div></div>
+  <div class="step"><div class="num">4</div><div class="text"><h3>Store</h3><p>Encrypted SQLite mapping database. AES-256-GCM. Auto-expires after 7 days.</p></div></div>
+  <div class="step"><div class="num">5</div><div class="text"><h3>Decloak</h3><p>When the LLM responds, reverse all substitutions. Originals perfectly restored.</p></div></div>
+</div>
+
+<footer>
+  <div class="links">
+    <a href="https://github.com/canonflip/cloakclaw">GitHub</a>
+    <a href="https://www.npmjs.com/package/cloakclaw">npm</a>
+    <a href="https://x.com/cloakclaw">@cloakclaw</a>
+    <a href="https://canonflip.com">Canonflip</a>
+  </div>
+  <p>© 2026 <a href="https://canonflip.com">Canonflip</a>. MIT License. Built for the ones who see the future.</p>
+</footer>
+
+</body>
+</html>
