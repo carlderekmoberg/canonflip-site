@@ -14,7 +14,7 @@ if (location.hostname === 'cloakclaw.com' || location.hostname === 'www.cloakcla
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Canonflip — The canon just flipped.</title>
 <meta name="description" content="Canonflip builds local-first, privacy-native, agent-powered software for the people who see the future.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟲</text></svg>">
+<link rel="icon" href="/canonflip-logo.png">
 <style>
   :root {
     --bg: #fdf6ee;
@@ -82,12 +82,15 @@ if (location.hostname === 'cloakclaw.com' || location.hostname === 'www.cloakcla
   }
   .hero-content { position: relative; z-index: 1; max-width: 800px; }
   .logo-mark {
-    font-size: 4rem;
     margin-bottom: 1rem;
     display: inline-block;
-    color: var(--accent2);
     filter: drop-shadow(0 2px 12px rgba(200,100,40,0.2));
     animation: drift 6s ease-in-out infinite;
+  }
+  .logo-mark img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
   }
   @keyframes drift {
     0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -299,7 +302,7 @@ if (location.hostname === 'cloakclaw.com' || location.hostname === 'www.cloakcla
 <!-- HERO -->
 <div class="hero">
   <div class="hero-content">
-    <div class="logo-mark">⟲</div>
+    <div class="logo-mark"><img src="/canonflip-logo.png" alt="Canonflip"></div>
     <h1>The canon just <span>flipped.</span></h1>
     <p class="subtitle">
       Everyone told you AI lives in the cloud. That your data belongs to someone else's servers. That you need their permission to build.
