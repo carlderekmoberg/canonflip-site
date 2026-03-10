@@ -1,4 +1,4 @@
-name = "canonflip-site"
+name = "cloakclaw-site"
 account_id = "632f38ea0fee443a1779672889ffeef2"
 compatibility_date = "2024-01-01"
 main = "_worker.js"
